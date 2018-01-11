@@ -5,7 +5,7 @@ import numpy as np
 import time
 
 
-TOP_PADDING = 600
+TOP_PADDING = 400
 
 
 def get_target_position():
@@ -28,13 +28,13 @@ def get_next_position():
         canny = cv2.Canny(img, 1, 10)
         h, w = canny.shape
 
-        for m in range(max_loc_target[1] - 10, max_loc_target[1] + 285):
-            for n in range(max_loc_target[0] - 10, max_loc_target[0] + 105):
+        for m in range(max_loc_target[1] - 10, max_loc_target[1] + 215):
+            for n in range(max_loc_target[0] - 10, max_loc_target[0] + 80):
                 canny[m][n] = 0
 
         y_top = np.nonzero([max(row) for row in canny[TOP_PADDING:]])[0][0] + TOP_PADDING
         x_top = int(np.mean(np.nonzero(canny[y_top])))
-        y_bottom = y_top + 100
+        y_bottom = y_top + 50
         for row in range(y_bottom, h):
             if canny[row, x_top] != 0:
                 y_bottom = row
@@ -45,7 +45,7 @@ def get_next_position():
 
 
 def jump(distance):
-    press_time = int(distance * 1.05)
+    press_time = int(distance * 1.35)
 
     rand = random.randint(0, 9) * 10
     cmd = ('adb shell input swipe %i %i %i %i ' + str(press_time)) % (320 + rand, 410 + rand, 320 + rand, 410 + rand)
@@ -59,7 +59,7 @@ def get_screen_shot(index):
 
 
 if __name__ == "__main__":
-    jump(580)
+    jump(530)
     time.sleep(1)
 
     target_img = cv2.imread("./res/target.jpg", 0)
@@ -67,22 +67,27 @@ if __name__ == "__main__":
     white_circle = cv2.imread('./res/white_circle.jpg', 0)
 
     for i in range(1000):
-        get_screen_shot(i)
+        get_screen_shot('temp')
 
-        wx_jump_screen = cv2.imread("./img/wx_jump_screen_%s.png" % i, 0)
+        wx_jump_screen = cv2.imread("./img/wx_jump_screen_%s.png" % 'temp', 0)
         res_end = cv2.matchTemplate(wx_jump_screen, game_over_img, cv2.TM_CCOEFF_NORMED)
         if cv2.minMaxLoc(res_end)[1] > 0.95:
             print('Game over!')
-            break
+            os.system('adb shell input tap 500 1580')
+            time.sleep(1)
+            jump(530)
+            time.sleep(1)
+            continue
+            # break
 
         max_loc_target = get_target_position()
-        max_loc_target = (max_loc_target[0] + 52, max_loc_target[1] + 252)
+        max_loc_target = (max_loc_target[0] + 39, max_loc_target[1] + 189)
 
         canny_img, next_x, next_y = get_next_position()
 
-        cv2.line(canny_img, (max_loc_target[0], max_loc_target[1]), (next_x, next_y), (255, 255, 0), 2)
-        cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
+        # cv2.line(canny_img, (max_loc_target[0], max_loc_target[1]), (next_x, next_y), (255, 255, 0), 2)
+        # cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
 
         distance = (abs(max_loc_target[0] - next_x) ** 2 + abs(max_loc_target[1] - next_y) ** 2) ** 0.5
         jump(distance)
-        time.sleep(1.3)
+        time.sleep(1)
