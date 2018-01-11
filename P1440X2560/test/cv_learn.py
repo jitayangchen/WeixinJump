@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 
-img_bg = cv2.imread("./test/img/wx_jump_screen_0.jpg", 0)
-img_target = cv2.imread("./test/img/target_1.jpg", 0)
+img_bg = cv2.imread("./img/wx_jump_screen_0.png", 0)
+img_target = cv2.imread("./img/target_1.jpg", 0)
 
 img = cv2.GaussianBlur(img_bg, (3, 3), 0)
 canny = cv2.Canny(img, 50, 150)
@@ -20,7 +20,7 @@ x_center, y_center = x_top, (y_top + y_bottom) // 2
 
 # cv2.rectangle(canny, (0, y_top), (500, y_top + 10), (255, 255, 0), 2)
 cv2.circle(canny, (x_center, y_center), 10, (255, 255, 0), 2)
-cv2.imwrite('./test/img/contours.jpg', canny)
+cv2.imwrite('./img/contours3.jpg', canny)
 print(y_top)
 # print(canny[0][0])
 

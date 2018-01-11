@@ -45,7 +45,7 @@ def get_next_position():
 
 
 def jump(distance):
-    press_time = int(distance * 1.05)
+    press_time = int(distance * 1.03)
 
     rand = random.randint(0, 9) * 10
     cmd = ('adb shell input swipe %i %i %i %i ' + str(press_time)) % (320 + rand, 410 + rand, 320 + rand, 410 + rand)
@@ -67,9 +67,9 @@ if __name__ == "__main__":
     white_circle = cv2.imread('./res/white_circle.jpg', 0)
 
     for i in range(1000):
-        get_screen_shot(i)
+        get_screen_shot('temp')
 
-        wx_jump_screen = cv2.imread("./img/wx_jump_screen_%s.png" % i, 0)
+        wx_jump_screen = cv2.imread("./img/wx_jump_screen_%s.png" % 'temp', 0)
         res_end = cv2.matchTemplate(wx_jump_screen, game_over_img, cv2.TM_CCOEFF_NORMED)
         if cv2.minMaxLoc(res_end)[1] > 0.95:
             print('Game over!')
@@ -80,8 +80,8 @@ if __name__ == "__main__":
 
         canny_img, next_x, next_y = get_next_position()
 
-        cv2.line(canny_img, (max_loc_target[0], max_loc_target[1]), (next_x, next_y), (255, 255, 0), 2)
-        cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
+        # cv2.line(canny_img, (max_loc_target[0], max_loc_target[1]), (next_x, next_y), (255, 255, 0), 2)
+        # cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
 
         distance = (abs(max_loc_target[0] - next_x) ** 2 + abs(max_loc_target[1] - next_y) ** 2) ** 0.5
         jump(distance)

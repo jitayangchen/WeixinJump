@@ -5,8 +5,8 @@ import numpy as np
 TOP_PADDING = 600
 
 
-wx_jump_screen = cv2.imread("./test/img/wx_jump_screen_0.png", 0)
-img_target = cv2.imread("./test/img/white_circle.jpg", 0)
+wx_jump_screen = cv2.imread("./img/wx_jump_screen_0.png", 0)
+img_target = cv2.imread("./img/white_circle.jpg", 0)
 res = cv2.matchTemplate(wx_jump_screen, img_target, cv2.TM_CCOEFF_NORMED)
 min_val1, max_val1, min_loc1, max_loc1 = cv2.minMaxLoc(res)
 # (-0.49441006779670715, 0.5061903595924377, (332, 909), (504, 557))
@@ -15,7 +15,7 @@ print(max_val1)
 print(min_loc1)
 print(max_loc1)
 cv2.rectangle(wx_jump_screen, max_loc1, (max_loc1[0] + 53, max_loc1[1] + 32), (0, 255, 0), 3)
-cv2.imwrite('./test/img/contours_1.jpg', wx_jump_screen)
+cv2.imwrite('./img/contours_1.jpg', wx_jump_screen)
 
 
 # def get_next_position():
