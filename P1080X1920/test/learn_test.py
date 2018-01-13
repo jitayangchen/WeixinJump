@@ -42,7 +42,7 @@ TOP_PADDING = 400
 
 target_img = cv2.imread("./res/target.jpg", 0)
 white_circle = cv2.imread('./res/white_circle.jpg', 0)
-wx_jump_screen = cv2.imread("./img/wx_jump_screen_33.png", 0)
+wx_jump_screen = cv2.imread("./img/wx_jump_screen_551.png", 0)
 
 max_loc_target = get_target_position()
 # max_loc_target = (max_loc_target[0] + 39, max_loc_target[1] + 189)
@@ -51,4 +51,4 @@ canny_img, next_x, next_y = get_next_position()
 
 cv2.line(canny_img, (max_loc_target[0] + 39, max_loc_target[1] + 189), (next_x, next_y), (255, 255, 0), 2)
 cv2.rectangle(canny_img, max_loc_target, (max_loc_target[0] + 78, max_loc_target[1] + 210), (0, 255, 0), 3)
-cv2.imwrite('./img/result_' + str(00) + '.jpg', canny_img)
+cv2.imwrite('./img/result_' + str(0) + '.jpg', canny_img)

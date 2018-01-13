@@ -66,10 +66,10 @@ if __name__ == "__main__":
     game_over_img = cv2.imread('./res/game_over.jpg', 0)
     white_circle = cv2.imread('./res/white_circle.jpg', 0)
 
-    for i in range(1000):
-        get_screen_shot('temp')
+    for i in range(10000):
+        get_screen_shot(i)
 
-        wx_jump_screen = cv2.imread("./img/wx_jump_screen_%s.png" % 'temp', 0)
+        wx_jump_screen = cv2.imread("./img/wx_jump_screen_%s.png" % i, 0)
         res_end = cv2.matchTemplate(wx_jump_screen, game_over_img, cv2.TM_CCOEFF_NORMED)
         if cv2.minMaxLoc(res_end)[1] > 0.95:
             print('Game over!')
@@ -80,8 +80,13 @@ if __name__ == "__main__":
 
         canny_img, next_x, next_y = get_next_position()
 
-        # cv2.line(canny_img, (target_bottom_center[0], target_bottom_center[1]), (next_x, next_y), (255, 255, 0), 2)
-        # cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
+        cv2.line(canny_img, (target_bottom_center[0], target_bottom_center[1]), (next_x, next_y), (255, 255, 0), 2)
+        cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
+
+        delete_index = i - 3
+        if delete_index >= 0:
+            os.remove('./img/wx_jump_screen_%s.png' % delete_index)
+            os.remove('./img/result_' + str(delete_index) + '.jpg')
 
         distance = (abs(target_bottom_center[0] - next_x) ** 2 + abs(target_bottom_center[1] - next_y) ** 2) ** 0.5
         jump(distance)
