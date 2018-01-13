@@ -76,13 +76,13 @@ if __name__ == "__main__":
             break
 
         max_loc_target = get_target_position()
-        max_loc_target = (max_loc_target[0] + 52, max_loc_target[1] + 252)
+        target_bottom_center = (max_loc_target[0] + 52, max_loc_target[1] + 252)
 
         canny_img, next_x, next_y = get_next_position()
 
-        # cv2.line(canny_img, (max_loc_target[0], max_loc_target[1]), (next_x, next_y), (255, 255, 0), 2)
+        # cv2.line(canny_img, (target_bottom_center[0], target_bottom_center[1]), (next_x, next_y), (255, 255, 0), 2)
         # cv2.imwrite('./img/result_' + str(i) + '.jpg', canny_img)
 
-        distance = (abs(max_loc_target[0] - next_x) ** 2 + abs(max_loc_target[1] - next_y) ** 2) ** 0.5
+        distance = (abs(target_bottom_center[0] - next_x) ** 2 + abs(target_bottom_center[1] - next_y) ** 2) ** 0.5
         jump(distance)
         time.sleep(1.3)
